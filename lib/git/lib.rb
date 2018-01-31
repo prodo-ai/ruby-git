@@ -495,12 +495,26 @@ module Git
 
     ## WRITE COMMANDS ##
 
-    def config_set(name, value)
-      command('config', [name, value])
+    def config_set(name, value, options={})
+      arr_opts = []
+
+      arr_opts << '--add' if options[:add]
+
+      arr_opts << name
+      arr_opts << value
+
+      command('config', arr_opts)
     end
 
-    def global_config_set(name, value)
-      command('config', ['--global', name, value], false)
+    def global_config_set(name, value, options={})
+      arr_opts = ['--global']
+
+      arr_opts << '--add' if options[:add]
+
+      arr_opts << name
+      arr_opts << value
+
+      command('config', arr_opts, false)
     end
 
     # updates the repository index using the working directory content
