@@ -149,6 +149,10 @@ module Git
     Git::Lib.new.ls_remote(location)
   end
 
+  def self.archive(sha, file, options = {})
+    Git::Lib.new.archive(sha, file, options)
+  end
+
   # open an existing git working directory
   #
   # this will most likely be the most common way to create
