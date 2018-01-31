@@ -3,6 +3,11 @@ require 'tempfile'
 module Git
 
   class GitExecuteError < StandardError
+    attr_reader :exit_code
+    def initialize(message, exit_code:)
+      @exit_code = exit_code
+      super message
+    end
   end
 
   class Lib
@@ -949,7 +954,7 @@ module Git
       end
 
       if exitstatus > 1 || (exitstatus == 1 && output != '')
-        raise Git::GitExecuteError.new(git_cmd + ':' + output.to_s)
+        raise Git::GitExecuteError.new(git_cmd + ':' + output.to_s, exit_code: exitstatus)
       end
 
       return output
