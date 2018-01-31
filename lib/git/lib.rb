@@ -836,22 +836,19 @@ module Git
         opts[:add_gzip] = true
       end
 
-      if !file
-        tempfile = Tempfile.new('archive')
-        file = tempfile.path
-        # delete it now, before we write to it, so that Ruby doesn't delete it
-        # when it finalizes the Tempfile.
-        tempfile.close!
-      end
-
       arr_opts = []
       arr_opts << "--format=#{opts[:format]}" if opts[:format]
       arr_opts << "--prefix=#{opts[:prefix]}" if opts[:prefix]
       arr_opts << "--remote=#{opts[:remote]}" if opts[:remote]
       arr_opts << sha
       arr_opts << '--' << opts[:path] if opts[:path]
-      command('archive', arr_opts, true, (opts[:add_gzip] ? '| gzip' : '') + " > #{escape file}")
-      return file
+
+      if file
+        command('archive', arr_opts, true, (opts[:add_gzip] ? '| gzip' : '') + " > #{escape file}")
+        return file
+      else
+        command('archive', arr_opts, true, (opts[:add_gzip] ? '| gzip' : ''))
+      end
     end
 
     # returns the current version of git, as an Array of Fixnums.
