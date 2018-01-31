@@ -62,6 +62,7 @@ module Git
 
       arr_opts = []
       arr_opts << '--bare' if opts[:bare]
+      arr_opts << '--mirror' if opts[:mirror]
       arr_opts << '--branch' << opts[:branch] if opts[:branch]
       arr_opts << '--depth' << opts[:depth].to_i if opts[:depth] && opts[:depth].to_i > 0
       arr_opts << '--config' << opts[:config] if opts[:config]
